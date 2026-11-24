@@ -3,7 +3,7 @@ package banco.gui;
 import banco.modelo.Banco;
 import banco.modelo.Persistencia;
 import java.awt.Component;
-import java.io.IOException;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 // Métodos auxiliares usados pelas telas
@@ -13,9 +13,9 @@ public class Util {
     public static void salvar(Component pai, Banco banco) {
         try {
             Persistencia.salvar(banco);
-        } catch (IOException e) {
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(pai,
-                    "A operação foi realizada, mas não foi possível salvar em "
+                    "A operação foi realizada, mas não foi possível salvar no banco de dados "
                     + Persistencia.ARQUIVO + ":\n" + e.getMessage(),
                     "Aviso", JOptionPane.WARNING_MESSAGE);
         }

@@ -14,6 +14,10 @@ public class ContaPoupanca extends Conta {
         this.taxaRendimento = taxa;
     }
 
+    public double getTaxaRendimento() {
+        return taxaRendimento;
+    }
+
     // Soma ao saldo o rendimento (saldo x taxa) e registra no extrato
     public void aplicarRendimento() {
         double rendimento = getSaldo() * taxaRendimento;

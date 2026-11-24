@@ -4,6 +4,7 @@ import banco.excecao.ContaInexistenteException;
 import banco.excecao.OperacaoInvalidaException;
 import banco.excecao.SaldoInsuficienteException;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -59,6 +60,18 @@ public class Banco implements Serializable {
             throw new ContaInexistenteException("Não existe conta com o número \"" + chave + "\".");
         }
         return conta;
+    }
+
+    public boolean estaVazio() {
+        return contas.isEmpty();
+    }
+
+    Collection<Conta> contasPersistidas() {
+        return contas.values();
+    }
+
+    void adicionarContaPersistida(Conta conta) {
+        contas.put(conta.getNumero(), conta);
     }
 
     public void transferir(String numeroOrigem, String numeroDestino, double valor)

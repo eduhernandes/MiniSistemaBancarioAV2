@@ -9,7 +9,7 @@ Evolução do mini sistema bancário da AV1, com:
 - Extrato bancário com `ArrayList<Transacao>`
 - Cadastro de contas em `Map<String, Conta>` (classe `Banco`)
 - Interface gráfica em Swing (menu, formulários e `JTable`)
-- Persistência dos dados com serialização de objetos (arquivo `banco.dat`)
+- Persistência das contas e dos extratos em SQLite via JDBC (arquivo `banco.db`)
 
 ## Estrutura
 - `banco.modelo`: Conta (abstrata), ContaCorrente, ContaPoupanca, ContaSalario, Transacao, Banco, Persistencia
@@ -17,9 +17,11 @@ Evolução do mini sistema bancário da AV1, com:
 - `banco.gui`: FormPrincipal, FormCadastroConta, FormOperacoes, FormExtrato, FormSobre, Util
 
 ## Como executar
-1. No NetBeans, crie um projeto Java Application (sem classe principal) e copie a pasta `banco` para dentro de `Source Packages`.
+1. Abra este projeto no NetBeans.
 2. Execute a classe `banco.gui.FormPrincipal` (botão direito > Run File, ou Shift + F6).
 3. Na primeira execução o sistema abre com 3 contas de exemplo: 001 (Corrente), 002 (Poupança) e 003 (Salário).
-4. Os dados são salvos automaticamente em `banco.dat` (na pasta do projeto) a cada operação e carregados ao abrir. Para voltar ao estado inicial, apague esse arquivo.
+4. Os dados são salvos automaticamente em `banco.db` (na pasta de execução) a cada operação e carregados ao abrir. Na primeira execução, são criadas 3 contas de exemplo. Para voltar ao estado inicial, feche o programa e apague o arquivo `banco.db`.
 
-Tecnologias: Java, Swing, NetBeans.
+O driver SQLite JDBC e sua dependência SLF4J ficam na pasta `lib`. Arquivos `banco.dat` de versões anteriores não são importados automaticamente.
+
+Tecnologias: Java, Swing, SQLite, JDBC, NetBeans.

@@ -3,3 +3,4 @@ dist/
 nbproject/private/
 *.class
 banco.dat
+banco.db

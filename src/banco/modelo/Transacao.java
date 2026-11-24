@@ -35,10 +35,14 @@ public class Transacao implements Serializable {
     private String contaRelacionada;
 
     public Transacao(Tipo tipo, double valor, String contaRelacionada) {
+        this(tipo, valor, contaRelacionada, LocalDateTime.now());
+    }
+
+    Transacao(Tipo tipo, double valor, String contaRelacionada, LocalDateTime dataHora) {
         this.tipo = tipo;
         this.valor = valor;
         this.contaRelacionada = contaRelacionada;
-        this.dataHora = LocalDateTime.now(); // data e hora do momento da operação
+        this.dataHora = dataHora;
     }
 
     public Tipo getTipo() {
@@ -51,6 +55,10 @@ public class Transacao implements Serializable {
 
     public String getContaRelacionada() {
         return contaRelacionada;
+    }
+
+    LocalDateTime getDataHoraPersistida() {
+        return dataHora;
     }
 
     public String getDataHoraFormatada() {

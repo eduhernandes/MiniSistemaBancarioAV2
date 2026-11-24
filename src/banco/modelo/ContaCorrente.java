@@ -14,6 +14,10 @@ public class ContaCorrente extends Conta {
         this.limiteChequeEspecial = limite;
     }
 
+    public double getLimiteChequeEspecial() {
+        return limiteChequeEspecial;
+    }
+
     // Saldo negativo = cheque especial em uso
     public double getChequeEspecialUtilizado() {
         if (getSaldo() < 0) {

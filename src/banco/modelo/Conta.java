@@ -114,6 +114,14 @@ public abstract class Conta implements Serializable {
         transacoes.add(transacao);
     }
 
+    void adicionarTransacaoPersistida(Transacao transacao) {
+        transacoes.add(transacao);
+    }
+
+    void limparTransacoesPersistidas() {
+        transacoes.clear();
+    }
+
     // IllegalArgumentException: exceção do próprio Java para argumento inválido
     protected void validarValor(double valor) {
         if (Double.isNaN(valor) || Double.isInfinite(valor) || valor <= 0) {

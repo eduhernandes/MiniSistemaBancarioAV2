@@ -2,7 +2,7 @@ package banco.gui;
 
 import banco.modelo.Banco;
 import banco.modelo.Persistencia;
-import java.io.IOException;
+import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -81,20 +81,19 @@ public class FormPrincipal extends JFrame {
             // se não conseguir, usa o visual padrão do Java
         }
         SwingUtilities.invokeLater(() -> {
-            Banco banco = null;
             try {
-                banco = Persistencia.carregar(); // lê o banco.dat (null se não existir)
-            } catch (IOException | ClassNotFoundException e) {
+                Banco banco = Persistencia.carregar();
+                if (banco.estaVazio()) {
+                    banco.carregarContasDeExemplo();
+                    Persistencia.salvar(banco);
+                }
+                new FormPrincipal(banco).setVisible(true);
+            } catch (SQLException e) {
                 JOptionPane.showMessageDialog(null,
-                        "Não foi possível ler o arquivo " + Persistencia.ARQUIVO
-                        + ". Será iniciado um banco novo.\n" + e.getMessage(),
-                        "Aviso", JOptionPane.WARNING_MESSAGE);
+                        "Não foi possível abrir o banco de dados " + Persistencia.ARQUIVO
+                        + ".\n" + e.getMessage(),
+                        "Erro", JOptionPane.ERROR_MESSAGE);
             }
-            if (banco == null) { // primeira execução (ou arquivo ilegível)
-                banco = new Banco();
-                banco.carregarContasDeExemplo();
-            }
-            new FormPrincipal(banco).setVisible(true);
         });
     }
 }
