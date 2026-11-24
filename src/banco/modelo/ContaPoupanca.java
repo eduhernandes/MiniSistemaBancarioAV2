@@ -4,9 +4,6 @@ import banco.excecao.SaldoInsuficienteException;
 
 public class ContaPoupanca extends Conta {
 
-    private static final long serialVersionUID = 1L;
-
-
     private double taxaRendimento; // ex.: 0.005 = 0,5%
 
     public ContaPoupanca(String numero, String titular, double saldoInicial, double taxa) {

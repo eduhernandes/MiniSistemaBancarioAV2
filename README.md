@@ -7,21 +7,25 @@ Professora: Roberta Mércia Rodrigues de Oliveira
 Evolução do mini sistema bancário da AV1, com:
 - Tratamento de exceções (exceções personalizadas e try/catch)
 - Extrato bancário com `ArrayList<Transacao>`
-- Cadastro de contas em `Map<String, Conta>` (classe `Banco`)
+- Contas cadastradas em `Map<String, Conta>` (classe `Banco`)
 - Interface gráfica em Swing (menu, formulários e `JTable`)
-- Persistência das contas e dos extratos em SQLite via JDBC (arquivo `banco.db`)
+- Persistência dos dados em banco de dados SQLite (JDBC)
 
 ## Estrutura
-- `banco.modelo`: Conta (abstrata), ContaCorrente, ContaPoupanca, ContaSalario, Transacao, Banco, Persistencia
-- `banco.excecao`: SaldoInsuficienteException, OperacaoInvalidaException, ContaInexistenteException
-- `banco.gui`: FormPrincipal, FormCadastroConta, FormOperacoes, FormExtrato, FormSobre, Util
+- `src/banco/modelo`: Conta (abstrata), ContaCorrente, ContaPoupanca, ContaSalario, Transacao, Banco, BancoDados
+- `src/banco/excecao`: SaldoInsuficienteException, OperacaoInvalidaException, ContaInexistenteException
+- `src/banco/gui`: FormPrincipal, FormCadastroConta, FormOperacoes, FormExtrato, FormSobre, Util
+- `lib/sqlite-jdbc-3.42.0.0.jar`: driver JDBC do SQLite (biblioteca de terceiros, projeto xerial/sqlite-jdbc)
 
-## Como executar
-1. Abra este projeto no NetBeans.
-2. Execute a classe `banco.gui.FormPrincipal` (botão direito > Run File, ou Shift + F6).
-3. Na primeira execução o sistema abre com 3 contas de exemplo: 001 (Corrente), 002 (Poupança) e 003 (Salário).
-4. Os dados são salvos automaticamente em `banco.db` (na pasta de execução) a cada operação e carregados ao abrir. Na primeira execução, são criadas 3 contas de exemplo. Para voltar ao estado inicial, feche o programa e apague o arquivo `banco.db`.
+## Como executar no NetBeans
+1. Crie um projeto *Java Application* (desmarque "Create Main Class").
+2. Copie a pasta `banco` para dentro de `Source Packages`.
+3. Copie a pasta `lib` para a pasta do projeto (no mesmo nível de `src` e `build.xml`).
+4. No NetBeans: botão direito em **Libraries** > **Add JAR/Folder** > escolha `lib/sqlite-jdbc-3.42.0.0.jar` (deixe marcado "Relative Path").
+5. Execute a classe `banco.gui.FormPrincipal` (botão direito > Run File, ou Shift + F6).
 
-O driver SQLite JDBC e sua dependência SLF4J ficam na pasta `lib`. Arquivos `banco.dat` de versões anteriores não são importados automaticamente.
+Na primeira execução o sistema cria o arquivo `banco.db` (na pasta do projeto) e as 3 contas de exemplo: 001 (Corrente), 002 (Poupança) e 003 (Salário). Os dados são salvos a cada operação e carregados ao abrir. Para voltar ao estado inicial, feche o programa e apague o `banco.db`.
 
-Tecnologias: Java, Swing, SQLite, JDBC, NetBeans.
+Se o driver não estiver nas bibliotecas, o sistema avisa e funciona sem salvar os dados.
+
+Tecnologias: Java 8+, Swing, SQLite (JDBC), NetBeans.

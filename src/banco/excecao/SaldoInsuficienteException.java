@@ -2,6 +2,7 @@ package banco.excecao;
 
 // Exceção PERSONALIZADA: lançada quando o saldo não permite a operação.
 // "extends Exception" = exceção verificada: o compilador obriga o try/catch (ou throws).
+// [VÍDEO] Exceção PERSONALIZADA. Herda de Exception = verificada: o compilador OBRIGA o try/catch.
 public class SaldoInsuficienteException extends Exception {
 
     public SaldoInsuficienteException(String mensagem) {

@@ -5,14 +5,13 @@ import banco.excecao.SaldoInsuficienteException;
 // Conta Salário: sem cheque especial, sem rendimento, NÃO recebe transferências.
 public class ContaSalario extends Conta {
 
-    private static final long serialVersionUID = 1L;
-
-
     public ContaSalario(String numero, String titular, double saldoInicial) {
         super(numero, titular, saldoInicial);
     }
 
     // Aqui está a regra: esta conta NÃO aceita receber transferências.
+    // [VÍDEO] ÚNICA regra da Conta Salário sobre transferência: devolve false. A verificação em si
+    //        acontece na classe Conta, então não repito código aqui.
     @Override
     public boolean aceitaTransferencia() {
         return false;

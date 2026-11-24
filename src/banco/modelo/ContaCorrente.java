@@ -4,9 +4,6 @@ import banco.excecao.SaldoInsuficienteException;
 
 public class ContaCorrente extends Conta {
 
-    private static final long serialVersionUID = 1L;
-
-
     private double limiteChequeEspecial;
 
     public ContaCorrente(String numero, String titular, double saldoInicial, double limite) {
@@ -31,6 +28,7 @@ public class ContaCorrente extends Conta {
     }
 
     // Regra da corrente: pode sacar até saldo + limite do cheque especial
+    // [VÍDEO] Aqui está o 'throw new ...': LANÇA a exceção personalizada quando o valor passa de saldo + limite.
     @Override
     protected void verificarSaque(double valor) throws SaldoInsuficienteException {
         if (valor > getSaldo() + limiteChequeEspecial) {

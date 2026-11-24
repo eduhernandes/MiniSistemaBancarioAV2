@@ -3,16 +3,14 @@ package banco.modelo;
 import banco.excecao.ContaInexistenteException;
 import banco.excecao.OperacaoInvalidaException;
 import banco.excecao.SaldoInsuficienteException;
-import java.io.Serializable;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 // Guarda todas as contas. Usa um Map: a CHAVE é o número da conta e o VALOR é a Conta.
 // Assim a busca por número é direta.
-public class Banco implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class Banco {
 
     // Nomes dos tipos (usados também no JComboBox da tela de cadastro)
     public static final String CORRENTE = "Conta Corrente";
@@ -24,8 +22,10 @@ public class Banco implements Serializable {
     public static final double TAXA_PADRAO = 0.005;
 
     // LinkedHashMap mantém a ordem em que as contas foram criadas
+    // [VÍDEO] Map: chave = número da conta, valor = Conta. A busca por número é direta (sem percorrer lista).
     private Map<String, Conta> contas = new LinkedHashMap<>();
 
+    // [VÍDEO] Lança OperacaoInvalidaException se o número estiver vazio ou já existir.
     public Conta criarConta(String tipo, String numero, String titular, double saldoInicial)
             throws OperacaoInvalidaException {
         numero = numero.trim();
@@ -52,7 +52,18 @@ public class Banco implements Serializable {
         return conta;
     }
 
+    // Devolve uma CÓPIA da lista de contas (usado para gravar no banco de dados)
+    public List<Conta> getContas() {
+        return new ArrayList<>(contas.values());
+    }
+
+    // Adiciona uma conta já pronta (usado ao LER as contas do banco de dados)
+    public void adicionarConta(Conta conta) {
+        contas.put(conta.getNumero(), conta);
+    }
+
     // Procura a conta pelo número. Se não achar, lança ContaInexistenteException.
+    // [VÍDEO] Lança ContaInexistenteException quando o número digitado não existe.
     public Conta buscarConta(String numero) throws ContaInexistenteException {
         String chave = (numero == null) ? "" : numero.trim();
         Conta conta = contas.get(chave);
@@ -62,18 +73,6 @@ public class Banco implements Serializable {
         return conta;
     }
 
-    public boolean estaVazio() {
-        return contas.isEmpty();
-    }
-
-    Collection<Conta> contasPersistidas() {
-        return contas.values();
-    }
-
-    void adicionarContaPersistida(Conta conta) {
-        contas.put(conta.getNumero(), conta);
-    }
-
     public void transferir(String numeroOrigem, String numeroDestino, double valor)
             throws ContaInexistenteException, SaldoInsuficienteException, OperacaoInvalidaException {
         Conta origem = buscarConta(numeroOrigem);
@@ -81,6 +80,7 @@ public class Banco implements Serializable {
         origem.transferir(destino, valor);
     }
 
+    // [VÍDEO] instanceof: só Conta Poupança pode receber rendimento.
     public void aplicarRendimento(String numero)
             throws ContaInexistenteException, OperacaoInvalidaException {
         Conta conta = buscarConta(numero);

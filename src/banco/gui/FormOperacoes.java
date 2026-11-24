@@ -81,6 +81,8 @@ public class FormOperacoes extends JFrame {
         }
     }
 
+    // [VÍDEO] try/catch: o try roda a operação; o catch pega a exceção lançada pelas regras e mostra a mensagem
+    //        em um JOptionPane. O sistema não quebra. O '|' (multi-catch) trata vários tipos no mesmo bloco.
     private void sacar() {
         try {
             Conta conta = banco.buscarConta(txtConta.getText());
@@ -93,6 +95,8 @@ public class FormOperacoes extends JFrame {
         }
     }
 
+    // [VÍDEO] Aqui podem ocorrer 4 exceções: conta inexistente, saldo insuficiente, operação inválida (Conta
+    //        Salário) e valor inválido. Depois do sucesso, Util.salvar grava no banco de dados.
     private void transferir() {
         try {
             double valor = Util.lerValor(txtValor.getText());

@@ -1,15 +1,13 @@
 package banco.modelo;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 // Representa UMA movimentação da conta (uma linha do extrato).
-public class Transacao implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class Transacao {
 
     // enum = lista fixa de valores possíveis para o tipo da transação
+    // [VÍDEO] enum = lista fixa de tipos. Tem 5: depósito, saque, transferência enviada/recebida e rendimento.
     public enum Tipo {
         DEPOSITO("Depósito"),
         SAQUE("Saque"),
@@ -35,14 +33,22 @@ public class Transacao implements Serializable {
     private String contaRelacionada;
 
     public Transacao(Tipo tipo, double valor, String contaRelacionada) {
-        this(tipo, valor, contaRelacionada, LocalDateTime.now());
-    }
-
-    Transacao(Tipo tipo, double valor, String contaRelacionada, LocalDateTime dataHora) {
         this.tipo = tipo;
         this.valor = valor;
         this.contaRelacionada = contaRelacionada;
+        this.dataHora = LocalDateTime.now(); // data e hora do momento da operação
+    }
+
+    // Construtor usado ao LER do banco de dados: mantém a data/hora original da transação
+    public Transacao(Tipo tipo, double valor, LocalDateTime dataHora, String contaRelacionada) {
+        this.tipo = tipo;
+        this.valor = valor;
         this.dataHora = dataHora;
+        this.contaRelacionada = contaRelacionada;
+    }
+
+    public LocalDateTime getDataHora() {
+        return dataHora;
     }
 
     public Tipo getTipo() {
@@ -55,10 +61,6 @@ public class Transacao implements Serializable {
 
     public String getContaRelacionada() {
         return contaRelacionada;
-    }
-
-    LocalDateTime getDataHoraPersistida() {
-        return dataHora;
     }
 
     public String getDataHoraFormatada() {

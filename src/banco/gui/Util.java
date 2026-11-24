@@ -1,7 +1,7 @@
 package banco.gui;
 
 import banco.modelo.Banco;
-import banco.modelo.Persistencia;
+import banco.modelo.BancoDados;
 import java.awt.Component;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
@@ -9,14 +9,26 @@ import javax.swing.JOptionPane;
 // Métodos auxiliares usados pelas telas
 public class Util {
 
-    // Salva o banco no arquivo. Se falhar, avisa o usuário (a operação em si já foi feita).
+    // Fica false quando o banco de dados não pôde ser aberto na inicialização
+    private static boolean salvamentoAtivo = true;
+
+    public static void desativarSalvamento() {
+        salvamentoAtivo = false;
+    }
+
+    // Grava o banco no SQLite. Se falhar, avisa o usuário (a operação em si já foi feita).
+    // [VÍDEO] Salva a cada operação concluída (e não só ao fechar), para não perder dados se o programa
+    //        for encerrado pelo botão Stop do NetBeans.
     public static void salvar(Component pai, Banco banco) {
+        if (!salvamentoAtivo) {
+            return; // sistema rodando só em memória
+        }
         try {
-            Persistencia.salvar(banco);
+            BancoDados.salvar(banco);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(pai,
-                    "A operação foi realizada, mas não foi possível salvar no banco de dados "
-                    + Persistencia.ARQUIVO + ":\n" + e.getMessage(),
+                    "A operação foi realizada, mas não foi possível gravar no banco de dados:\n"
+                    + e.getMessage(),
                     "Aviso", JOptionPane.WARNING_MESSAGE);
         }
     }

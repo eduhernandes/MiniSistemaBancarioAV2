@@ -1,7 +1,7 @@
 package banco.gui;
 
 import banco.modelo.Banco;
-import banco.modelo.Persistencia;
+import banco.modelo.BancoDados;
 import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,6 +17,7 @@ import javax.swing.UIManager;
 public class FormPrincipal extends JFrame {
 
     // Existe UM único Banco, compartilhado com todas as janelas (passado pelo construtor)
+    // [VÍDEO] Existe UM único Banco, criado no main e passado pelo construtor para todas as janelas.
     private Banco banco;
 
     public FormPrincipal(Banco banco) {
@@ -74,6 +75,7 @@ public class FormPrincipal extends JFrame {
     }
 
     // Ponto de entrada do programa
+    // [VÍDEO] Ponto de entrada. Aqui o sistema carrega os dados do SQLite (ou cria as contas de exemplo).
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -81,19 +83,24 @@ public class FormPrincipal extends JFrame {
             // se não conseguir, usa o visual padrão do Java
         }
         SwingUtilities.invokeLater(() -> {
+            Banco banco;
             try {
-                Banco banco = Persistencia.carregar();
-                if (banco.estaVazio()) {
+                banco = BancoDados.carregar(); // lê as contas e extratos do SQLite
+                if (banco.getContas().isEmpty()) { // primeira execução: banco de dados vazio
                     banco.carregarContasDeExemplo();
-                    Persistencia.salvar(banco);
+                    BancoDados.salvar(banco);
                 }
-                new FormPrincipal(banco).setVisible(true);
-            } catch (SQLException e) {
+            } catch (SQLException | RuntimeException e) {
                 JOptionPane.showMessageDialog(null,
-                        "Não foi possível abrir o banco de dados " + Persistencia.ARQUIVO
-                        + ".\n" + e.getMessage(),
-                        "Erro", JOptionPane.ERROR_MESSAGE);
+                        "Não foi possível usar o banco de dados SQLite.\n"
+                        + "Verifique se o driver (sqlite-jdbc) foi adicionado às bibliotecas do projeto.\n"
+                        + "O sistema vai funcionar SEM salvar os dados.\n\nDetalhe: " + e.getMessage(),
+                        "Aviso", JOptionPane.WARNING_MESSAGE);
+                Util.desativarSalvamento();
+                banco = new Banco();
+                banco.carregarContasDeExemplo();
             }
+            new FormPrincipal(banco).setVisible(true);
         });
     }
 }
